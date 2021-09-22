@@ -10,11 +10,26 @@
         <script defer src="script.js"></script>
     </head>
     <body>
+        <div class="drag-handle" data-test-icon draggable=true></div>
         <div class="icon" draggable=true data-icon></div>
         <div class="gooey-wrapper" data-gooey-wrapper>
-            <div class="dropbox" data-dropbox></div>
-            <div class="ball ball1" data-ball draggable=true></div>
-            <div class="menu"></div>
+            <div class="ball ball1" data-ball>
+                <img src="./Images/color-wheel.png" alt="icon">
+            </div>
+            <div class="ball ball2">
+                <img src="./Images/color-wheel.png" width="50px" height="50px" alt="icon">
+                <div class="drag-handle drag2" draggable=true></div>
+            </div>
         </div>
+        <div class="dropbox" data-dropbox></div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                    <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -9" result="goo" />
+                    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+                </filter>
+            </defs>
+        </svg>
     </body>
 </html>
