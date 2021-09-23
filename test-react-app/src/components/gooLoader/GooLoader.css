@@ -31,6 +31,7 @@ section {
 }
 
 .selection-item {
+    position: relative;
     cursor: pointer;
     background: inherit;
     width: 50px;
