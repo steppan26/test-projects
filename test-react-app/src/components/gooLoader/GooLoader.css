@@ -8,34 +8,50 @@
 
 section {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column nowrap;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.viewport{
+    position: relative;
+    border: 3px solid black;
+    height: 650px;
+    width: 650px;
+
 }
 
 .selection-wrapper {
-    position: absolute;
-    top: 25px;
-    width: 100%;
-    height: 250px;
-    filter: url('#goo');
-    border: 1PX solid black;
-}
-
-.item-bar {
+    box-sizing: content-box;
+    position: fixed;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 200px;
+    bottom: 0px;
+    width: 100%;
+    height: 150px;
+    filter: url('#goo');
+    padding: 2rem 0;
+}
+
+.item-bar {
+    height: 100%;
     width: 100%;
     background: chocolate;
     position: absolute;
-    top: -26px
 }
 
 .selection-item {
     position: relative;
     cursor: pointer;
     background: inherit;
-    width: 50px;
-    height: 50px;
+    width: 150px;
+    flex-grow: 0;
+    height: 150px;
     transition: all 600ms ease-in-out;
     margin-top: 0;
     background-image: url('./Images/color-wheel.png');
@@ -48,5 +64,6 @@ section {
     position: absolute;
     margin-top: 20rem;
     justify-self: center;
+    width: 50%;
     background-color: transparent;
 }
