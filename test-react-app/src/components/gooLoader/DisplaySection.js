@@ -1,15 +1,16 @@
 import React from 'react'
 import { useTransition, animated } from 'react-spring'
 
-function DisplaySection( { imageUrl = './Images/color-wheel.png', selectedSlide = {}, items }) {
+function DisplaySection( { imageUrl, items }) {
     const transition = useTransition(items, {
-        from: { height: "0%", width: "0%", borderRadius: "5em" },
+        from: { height: "0%", width: "0%", borderRadius: "0em", delay: 0 },
         enter: item => async (next) => {
-            await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 600 })
+            // await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 200 })
             await next({ height: "100%",width: "100%", borderRadius: "0em" })
         },
-        leave:{  height: "0%", width: "0%", borderRadius: "5em" },
+        leave:{ height: "0%",width: "0%", borderRadius: "5em", delay: 0 },
     })
+
 
     return (
         <div className="display-area">

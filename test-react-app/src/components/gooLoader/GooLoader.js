@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSpring, animated, config, useTransition } from 'react-spring'
+import { useSpring, animated } from 'react-spring'
 import './GooLoader.css'
 import image1 from './Images/Accordion-card_screenshot.png'
 import image2 from './Images/Calculator-app_screenshot.png'
@@ -31,28 +31,34 @@ const GooLoader = () => {
             config: {
                 mass: 1.2,
                 tension: 120,
-                friction: 11,
+                friction: 14,
                 precision: 0.001
               },
-            from: {transform: "scale(1) translateY(0px)", position: "relative"},
-            // to: item => async (next) => {
-            //     await next({ transform: icon ? "scale(1.4) translateY(-150px)" : "scale(1) translateY(0px)" })
-            //     await next({ position: icon ? "absolute" : "relative", delay: 200 })
-            // },
-            to: { transform: icon ? "scale(1.4) translateY(-150px)" : "scale(1) translateY(0px)"}
+              from: {
+                  transform: "scale(1) translateY(0px)",
+                  position: "relative",
+                },
+              to: {
+                transform: icon ? "scale(1.4) translateY(-50px)" : "scale(1) translateY(0px)",
+                position: "relative",
+                delay: 600,
+              }
         })
     }
 
+    // SET SPRINGS FOR EACH ICON
     const iconOne = useSpring(elementStyle(iconOneState))
     const iconTwo = useSpring(elementStyle(iconTwoState))
     const iconThree = useSpring(elementStyle(iconThreeState))
     const iconFour = useSpring(elementStyle(iconFourState))
+
 
     function itemClickHandler(iconStateId, event) {
         let iconOne = false
         let iconTwo = false
         let iconThree = false
         let iconFour = false
+        const iconsArray = [iconOne, iconTwo, iconThree, iconFour]
 
         let image = ""
         const rootElement = event.target.parentNode.parentNode.parentNode
@@ -83,16 +89,18 @@ const GooLoader = () => {
                 color = "302, 7 ,35"
                 break
             }
+
             updateIconOneState(iconOne)
             updateIconTwoState(iconTwo)
             updateIconThreeState(iconThree)
             updateIconFourState(iconFour)
             transitionImages(image)
-            // rootElement.style.setProperty('--var-temp', color, 'important')
+            rootElement.style.setProperty('--var-temp', color, 'important')
 
 
 
             // toggleSelectedItemEffects(event.target)
+            
     }
 
     const transitionImages = async (image) => {
@@ -101,7 +109,7 @@ const GooLoader = () => {
             setDisplayedImg(image)
             setIsvisible(true)
 
-        }, 0)
+        }, 500)
     }
 
     const toggleSelectedItemEffects = (selectedItem) => {
@@ -114,8 +122,8 @@ const GooLoader = () => {
     return(
         <section>
             <div className="viewport">
-                <DisplaySection imageUrl={displayedImg} selectedSlide={slides[0]} items={isVisible} />
-                <div className="selection-wrapper effect-active">
+                <DisplaySection imageUrl={displayedImg} items={isVisible} />
+                <div className="selection-wrapper">
                     <div className="item-bar">
                     </div>
                     <animated.img src={image1} id="iconOne" style={iconOne} onClick={ (e) => itemClickHandler("iconOneState",e)} className="selection-item" />

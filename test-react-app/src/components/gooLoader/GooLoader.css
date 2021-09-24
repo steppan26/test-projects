@@ -55,7 +55,10 @@ img{
 .container {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .selection-wrapper {
@@ -69,7 +72,6 @@ img{
     max-height: 150px;
     filter: url('#goo');
     padding: 0.8em 0;
-    overflow-x: scroll;
     scrollbar-width: none;
 }
 
@@ -79,7 +81,6 @@ img{
     background: currentColor;
     position: absolute;
     margin: 1em;
-    visibility: hidden;
 }
 
 .selection-item {
@@ -90,12 +91,11 @@ img{
     flex-grow: 0;
     height: 6em;
     width: 6em;
-    border-radius: 1.4em;
-    margin: 0.5em;
+    border-radius: 1.2em;
     border: 6px solid currentColor;
     padding: 0.4em;
 }
 
 .effect-active {
-    box-shadow: 0 2.5em 22px 0.7em rgba(var(--var-temp), 0.8);
+    box-shadow: 0 1em 12px 0.4em rgba(var(--var-temp), 0.8);
 }
