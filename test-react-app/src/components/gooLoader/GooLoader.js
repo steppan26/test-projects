@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useSpring, animated, config } from 'react-spring'
+import { useSpring, animated, config, useTransition } from 'react-spring'
 import './GooLoader.css'
 import image1 from './Images/Accordion-card_screenshot.png'
 import image2 from './Images/Calculator-app_screenshot.png'
 import image3 from './Images/Crowdfunding-product-page_screenshot.png'
 import image4 from './Images/Smart-Brain_screenshot.png'
-import image5 from './Images/Todo-list_screenshot.png'
 import placeHolder from './Images/color-wheel.png'
+import DisplaySection from "./DisplaySection";
+
+
+const slides = [
+    { id: 0, url: './Images/Accordion-card_screenshot.png'},
+    { id: 1, url: './Images/Calculator-app_screenshot.png'},
+    { id: 2, url: './Images/column-preview-card_screenshot.png'},
+    { id: 3, url: './Images/Crowdfunding-product-page_screenshot.png'},
+    { id: 4, url: './Images/Smart-Brain_screenshot.png'},
+]
 
 
 const GooLoader = () => {
@@ -15,32 +24,24 @@ const GooLoader = () => {
     const [iconThreeState, updateIconThreeState] = useState(false)
     const [iconFourState, updateIconFourState] = useState(false)
     const [displayedImg, setDisplayedImg] = useState(placeHolder)
-
+    const [isVisible, setIsvisible] = useState(false)
 
     const elementStyle = (icon) => {
         return ({
             config: {
                 mass: 1.2,
                 tension: 120,
-                friction: 14,
+                friction: 11,
                 precision: 0.001
               },
-            from: {transform: "scale(1)"},
-            to: { transform: icon ? "scale(1.6)" : "scale(1)" }
+            from: {transform: "scale(1) translateY(0px)", position: "relative"},
+            // to: item => async (next) => {
+            //     await next({ transform: icon ? "scale(1.4) translateY(-150px)" : "scale(1) translateY(0px)" })
+            //     await next({ position: icon ? "absolute" : "relative", delay: 200 })
+            // },
+            to: { transform: icon ? "scale(1.4) translateY(-150px)" : "scale(1) translateY(0px)"}
         })
     }
-
-    const displayStyle = useSpring({
-        config: {
-            mass: 1.2,
-            tension: 120,
-            friction: 14,
-            precision: 0.001
-        },
-        from: {opacity: 0},
-        to: {opacity: 1}
-    })
-
 
     const iconOne = useSpring(elementStyle(iconOneState))
     const iconTwo = useSpring(elementStyle(iconTwoState))
@@ -54,6 +55,9 @@ const GooLoader = () => {
         let iconFour = false
 
         let image = ""
+        const rootElement = event.target.parentNode.parentNode.parentNode
+        let color = "0, 0, 0"
+
 
         switch(iconStateId){
             default:
@@ -61,27 +65,43 @@ const GooLoader = () => {
             case "iconOneState":
                 iconOne = true
                 image = image1
+                color = "330, 223 ,10"
                 break
             case "iconTwoState":
                 iconTwo = true
                 image = image2
+                color = "235, 52 ,171"
                 break
             case "iconThreeState":
                 iconThree = true
                 image = image3
+                color = "6, 235 ,124"
                 break
             case "iconFourState":
                 iconFour = true
                 image = image4
+                color = "302, 7 ,35"
                 break
             }
             updateIconOneState(iconOne)
             updateIconTwoState(iconTwo)
             updateIconThreeState(iconThree)
             updateIconFourState(iconFour)
-            setDisplayedImg(image)
+            transitionImages(image)
+            // rootElement.style.setProperty('--var-temp', color, 'important')
+
+
 
             // toggleSelectedItemEffects(event.target)
+    }
+
+    const transitionImages = async (image) => {
+        setIsvisible(false)
+        setTimeout(() => {
+            setDisplayedImg(image)
+            setIsvisible(true)
+
+        }, 0)
     }
 
     const toggleSelectedItemEffects = (selectedItem) => {
@@ -94,8 +114,8 @@ const GooLoader = () => {
     return(
         <section>
             <div className="viewport">
-                <animated.img style={displayStyle} src={displayedImg} className="display-area" />
-                <div className="selection-wrapper">
+                <DisplaySection imageUrl={displayedImg} selectedSlide={slides[0]} items={isVisible} />
+                <div className="selection-wrapper effect-active">
                     <div className="item-bar">
                     </div>
                     <animated.img src={image1} id="iconOne" style={iconOne} onClick={ (e) => itemClickHandler("iconOneState",e)} className="selection-item" />
