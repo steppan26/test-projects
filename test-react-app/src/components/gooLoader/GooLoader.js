@@ -95,7 +95,7 @@ const GooLoader = () => {
             updateIconThreeState(iconThree)
             updateIconFourState(iconFour)
             transitionImages(image)
-            rootElement.style.setProperty('--var-temp', color, 'important')
+            // rootElement.style.setProperty('--var-temp', color, 'important')
 
 
 

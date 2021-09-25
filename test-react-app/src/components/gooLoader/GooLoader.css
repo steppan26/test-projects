@@ -7,7 +7,7 @@
 }
 
 section {
-    --var-temp: 30, 123, 210;
+    --var-temp: 30, 123, 310;
     position: relative;
     display: flex;
     justify-content: flex-start;
@@ -91,7 +91,7 @@ img{
     flex-grow: 0;
     height: 6em;
     width: 6em;
-    border-radius: 1.2em;
+    border-radius: 50%;
     border: 6px solid currentColor;
     padding: 0.4em;
 }
