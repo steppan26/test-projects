@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useSpring, animated } from 'react-spring'
 import './GooLoader.css'
-import image1 from './Images/Accordion-card_screenshot.png'
-import image2 from './Images/Calculator-app_screenshot.png'
-import image3 from './Images/Crowdfunding-product-page_screenshot.png'
-import image4 from './Images/Smart-Brain_screenshot.png'
-import placeHolder from './Images/color-wheel.png'
 import DisplaySection from "./DisplaySection";
+import placeHolder from './Images/icon.png'
+import { useRef } from "react";
+
+const GooLoader = ( { projectsArray, projectsFolderUrl = './Images', ...props } ) => {
+    const [projectsStyle, setProjectsStyle] = useState([])
+    const [activeProjectId, setActiveProjectId] = useState(0)
+    const sectionRef = useRef(null)
+    const [tempState, setTempState] = useState(false)
+
+    useEffect(() => {
+        projectsArray.forEach(project => {
+            console.log("useEffect: ", project.screenshotsArray)
+        })
+    }, [])
 
 
-const slides = [
-    { id: 0, url: './Images/Accordion-card_screenshot.png'},
-    { id: 1, url: './Images/Calculator-app_screenshot.png'},
-    { id: 2, url: './Images/column-preview-card_screenshot.png'},
-    { id: 3, url: './Images/Crowdfunding-product-page_screenshot.png'},
-    { id: 4, url: './Images/Smart-Brain_screenshot.png'},
-]
-
-
-const GooLoader = () => {
-    const [iconOneState, updateIconOneState] = useState(false)
-    const [iconTwoState, updateIconTwoState] = useState(false)
-    const [iconThreeState, updateIconThreeState] = useState(false)
-    const [iconFourState, updateIconFourState] = useState(false)
-    const [displayedImg, setDisplayedImg] = useState(placeHolder)
+    // const [iconOneState, updateIconOneState] = useState(false)
+    // const [iconTwoState, updateIconTwoState] = useState(false)
+    // const [iconThreeState, updateIconThreeState] = useState(false)
+    // const [iconFourState, updateIconFourState] = useState(false)
+    const [displayedImagesArray, setdisplayedImagesArray] = useState()
     const [isVisible, setIsvisible] = useState(false)
+
+
+    // const importedImages = importAll(require.context(projectsFolderUrl, false, /\.(png|jpe?g|svg)$/));
+
 
     const elementStyle = (icon) => {
         return ({
@@ -46,67 +49,38 @@ const GooLoader = () => {
         })
     }
 
+    const style = useSpring(elementStyle())
     // SET SPRINGS FOR EACH ICON
-    const iconOne = useSpring(elementStyle(iconOneState))
-    const iconTwo = useSpring(elementStyle(iconTwoState))
-    const iconThree = useSpring(elementStyle(iconThreeState))
-    const iconFour = useSpring(elementStyle(iconFourState))
+    // const iconOne = useSpring(elementStyle(iconOneState))
+    // const iconTwo = useSpring(elementStyle(iconTwoState))
+    // const iconThree = useSpring(elementStyle(iconThreeState))
+    // const iconFour = useSpring(elementStyle(iconFourState))
 
 
     function itemClickHandler(iconStateId, event) {
-        let iconOne = false
-        let iconTwo = false
-        let iconThree = false
-        let iconFour = false
-        const iconsArray = [iconOne, iconTwo, iconThree, iconFour]
+        const wrapper = [...event.target.parentNode.children]
+        setActiveProjectId(iconStateId)
 
-        let image = ""
         const rootElement = event.target.parentNode.parentNode.parentNode
-        let color = "0, 0, 0"
 
 
-        switch(iconStateId){
-            default:
-                break
-            case "iconOneState":
-                iconOne = true
-                image = image1
-                color = "330, 223 ,10"
-                break
-            case "iconTwoState":
-                iconTwo = true
-                image = image2
-                color = "235, 52 ,171"
-                break
-            case "iconThreeState":
-                iconThree = true
-                image = image3
-                color = "6, 235 ,124"
-                break
-            case "iconFourState":
-                iconFour = true
-                image = image4
-                color = "302, 7 ,35"
-                break
-            }
-
-            updateIconOneState(iconOne)
-            updateIconTwoState(iconTwo)
-            updateIconThreeState(iconThree)
-            updateIconFourState(iconFour)
-            transitionImages(image)
+            // projectsStyle.forEach(project => console.log(project.id))
+            // updateIconOneState(iconOne)
+            // updateIconTwoState(iconTwo)
+            // updateIconThreeState(iconThree)
+            // updateIconFourState(iconFour)
+            // transitionImages(image)
             // rootElement.style.setProperty('--var-temp', color, 'important')
 
 
 
             // toggleSelectedItemEffects(event.target)
-            
     }
 
-    const transitionImages = async (image) => {
+    const transitionImages = async (projectIndex) => {
         setIsvisible(false)
         setTimeout(() => {
-            setDisplayedImg(image)
+            setdisplayedImagesArray(projectsArray[projectIndex].galleryArray)
             setIsvisible(true)
 
         }, 500)
@@ -118,18 +92,22 @@ const GooLoader = () => {
             selectedItem === icon ? icon.classList.add('selected') : icon.classList.remove('selected')
         })
     }
-
     return(
-        <section>
+        <section ref={sectionRef}>
             <div className="viewport">
-                <DisplaySection imageUrl={displayedImg} items={isVisible} />
+                <DisplaySection imageUrl={projectsStyle[activeProjectId]} items={isVisible} />
                 <div className="selection-wrapper">
-                    <div className="item-bar">
+                    <div className="item-bar" onClick={() => {console.log()}}>
                     </div>
-                    <animated.img src={image1} id="iconOne" style={iconOne} onClick={ (e) => itemClickHandler("iconOneState",e)} className="selection-item" />
-                    <animated.img src={image2} id="iconTwo" style={iconTwo} onClick={ (e) => itemClickHandler("iconTwoState",e)} className="selection-item" />
-                    <animated.img src={image3} id="iconThree" style={iconThree} onClick={ (e) => itemClickHandler("iconThreeState",e)} className="selection-item" />
-                    <animated.img src={image4} id="iconFour" style={iconFour} onClick={ (e) => itemClickHandler("iconFourState",e)} className="selection-item" />
+                    {projectsArray.length > 0 ?
+                        projectsArray.map(project => {
+                            return (
+                                <animated.img style={activeProjectId === project.id ? style : {}} src={project.icon} id={project.id} onClick={ (e) => itemClickHandler(project.id, e)} className="selection-item" alt="project icon" />
+                            )
+                        })
+                    : <>
+                    </>
+                    }
                 </div>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1">

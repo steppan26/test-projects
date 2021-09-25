@@ -18,7 +18,7 @@ function DisplaySection( { imageUrl, items }) {
                 {transition((style, item) =>
                     item ?
                         <animated.img
-                            src={imageUrl}
+                            src={imageUrl[0]}
                             alt="project screenshot"
                             style={style}
                             width="300px"
@@ -30,6 +30,24 @@ function DisplaySection( { imageUrl, items }) {
             </div>
         </div>
     )
+
+    // return (
+    //     <div className="display-area">
+    //         <div className="container">
+    //                 <img
+    //                     src={imageUrl[0]}
+    //                     alt="project screenshot"
+    //                     // style={style}
+    //                     width="300px"
+    //                     height="300px"
+    //                 />
+    //         </div>
+    //     </div>
+    // )
+
+
   }
+
+
 
   export default DisplaySection
