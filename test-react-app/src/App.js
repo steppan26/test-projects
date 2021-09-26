@@ -4,6 +4,7 @@ import projectOneIcon from './components/gooLoader/Images/Project1/icon.png'
 import projectTwoIcon from './components/gooLoader/Images/Project2/icon.png'
 import projectThreeIcon from './components/gooLoader/Images/Project3/icon.png'
 
+
 const importAll = (assets) => {
   let images = {};
    assets.keys().forEach((item, index) => { images[item.replace('./', '')] = assets(item); });
@@ -31,6 +32,11 @@ const App = () => {
         {
           id: "ProjectThree",
           icon: projectThreeIcon,
+          screenshotsArray:projectThreeImages
+        },
+        {
+          id: "ProjectThree",
+          icon: projectOneIcon,
           screenshotsArray:projectThreeImages
         }
       ]}

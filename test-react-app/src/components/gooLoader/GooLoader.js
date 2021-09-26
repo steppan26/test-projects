@@ -13,7 +13,7 @@ const GooLoader = ( { projectsArray, projectsFolderUrl = './Images', ...props } 
 
     useEffect(() => {
         projectsArray.forEach(project => {
-            console.log("useEffect: ", project.screenshotsArray)
+            // console.log("useEffect: ", project.screenshotsArray)
         })
     }, [])
 
@@ -29,7 +29,7 @@ const GooLoader = ( { projectsArray, projectsFolderUrl = './Images', ...props } 
     // const importedImages = importAll(require.context(projectsFolderUrl, false, /\.(png|jpe?g|svg)$/));
 
 
-    const elementStyle = (icon) => {
+    const elementStyle = (state) => {
         return ({
             config: {
                 mass: 1.2,
@@ -42,14 +42,14 @@ const GooLoader = ( { projectsArray, projectsFolderUrl = './Images', ...props } 
                   position: "relative",
                 },
               to: {
-                transform: icon ? "scale(1.4) translateY(-50px)" : "scale(1) translateY(0px)",
+                transform: state ? "scale(1.4) translateY(-50px)" : "scale(1) translateY(0px)",
                 position: "relative",
                 delay: 600,
               }
         })
     }
 
-    const style = useSpring(elementStyle())
+    const style = useSpring(elementStyle(tempState))
     // SET SPRINGS FOR EACH ICON
     // const iconOne = useSpring(elementStyle(iconOneState))
     // const iconTwo = useSpring(elementStyle(iconTwoState))
@@ -57,9 +57,16 @@ const GooLoader = ( { projectsArray, projectsFolderUrl = './Images', ...props } 
     // const iconFour = useSpring(elementStyle(iconFourState))
 
 
-    function itemClickHandler(iconStateId, event) {
+    function itemClickHandler( event ) {
         const wrapper = [...event.target.parentNode.children]
-        setActiveProjectId(iconStateId)
+        wrapper.shift()
+        wrapper.forEach( (project, index) => {
+            if(event.target === project){
+                setActiveProjectId(index)
+            }
+            console.log(project)
+        })
+        setTimeout(setTempState(v => !v), 1000)
 
         const rootElement = event.target.parentNode.parentNode.parentNode
 
@@ -100,9 +107,17 @@ const GooLoader = ( { projectsArray, projectsFolderUrl = './Images', ...props } 
                     <div className="item-bar" onClick={() => {console.log()}}>
                     </div>
                     {projectsArray.length > 0 ?
-                        projectsArray.map(project => {
+                        projectsArray.map((project, index) => {
                             return (
-                                <animated.img style={activeProjectId === project.id ? style : {}} src={project.icon} id={project.id} onClick={ (e) => itemClickHandler(project.id, e)} className="selection-item" alt="project icon" />
+                                <animated.img
+                                    style={index === activeProjectId ? style : {}}
+                                    src={project.icon}
+                                    id={project.id}
+                                    key={index}
+                                    onClick={ (event) => itemClickHandler(event)}
+                                    className="selection-item"
+                                    alt="project icon"
+                                />
                             )
                         })
                     : <>
