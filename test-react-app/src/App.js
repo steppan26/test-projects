@@ -42,17 +42,17 @@ const App = () => {
           {
             id: "ProjectOne",
             icon: projectOneIcon,
-            screenshotsArray:projectOneImages
+            screenshotsArray: projectOneImages
           },
           {
             id: "ProjectTwo",
             icon: projectTwoIcon,
-            screenshotsArray:projectTwoImages
+            screenshotsArray: projectTwoImages
           },
           {
             id: "ProjectThree",
             icon: projectThreeIcon,
-            screenshotsArray:projectThreeImages
+            screenshotsArray: projectThreeImages
           },
         ]}
       />

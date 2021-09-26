@@ -71,7 +71,7 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
     return(
         <section ref={sectionRef}>
             <div className="viewport">
-                <DisplaySection imageUrl={projectsStyle[activeProjectId]} items={isVisible} />
+                <DisplaySection screenshotsArray={projectsArray[activeProjectId].screenshotsArray} items={isVisible} />
                 <div className="selection-wrapper">
                     <div className="item-bar" onClick={() => {console.log(springs)}}>
                     </div>
