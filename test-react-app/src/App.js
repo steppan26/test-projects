@@ -18,29 +18,44 @@ const projectThreeImages = importAll(require.context('./components/gooLoader/Ima
 const App = () => {
   return (
     <div className="App">
-      <GooLoader projectsArray={[
-        {
-          id: "ProjectOne",
-          icon: projectOneIcon,
-          screenshotsArray:projectOneImages
-        },
-        {
-          id: "ProjectTwo",
-          icon: projectTwoIcon,
-          screenshotsArray:projectTwoImages
-        },
-        {
-          id: "ProjectThree",
-          icon: projectThreeIcon,
-          screenshotsArray:projectThreeImages
-        },
-        {
-          id: "ProjectThree",
-          icon: projectOneIcon,
-          screenshotsArray:projectThreeImages
-        }
-      ]}
-      projectsFolderUrl='./components/gooLoader/Images' />
+      <GooLoader
+        iconAnimations = {{
+          from: {
+            transform: "scale(1) translateY(0px)",
+            opactiy: 0,
+            delay: 200,
+          },
+          to: {
+            transform: "scale(1.4) translateY(-50px)",
+            delay: 200,
+          }
+        }}
+        galleryAnimations = {{
+          from: {
+
+          },
+          to: {
+
+          }
+        }}
+        projectsArray={[
+          {
+            id: "ProjectOne",
+            icon: projectOneIcon,
+            screenshotsArray:projectOneImages
+          },
+          {
+            id: "ProjectTwo",
+            icon: projectTwoIcon,
+            screenshotsArray:projectTwoImages
+          },
+          {
+            id: "ProjectThree",
+            icon: projectThreeIcon,
+            screenshotsArray:projectThreeImages
+          },
+        ]}
+      />
     </div>
   );
 }

@@ -84,7 +84,7 @@ img{
     margin: 1em;
 }
 
-.selection-item {
+.project-item {
     box-sizing: border-box;
     position: relative;
     cursor: pointer;
