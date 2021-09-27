@@ -5,7 +5,7 @@ import placeHolder from './Images/arrow-icon.png'
 import { useRef } from "react";
 
 
-const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
+const GooLoader = ( {width = "auto", height="auto", projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
     const [ activeProjectId, setActiveProjectId ] = useState(0)
     const [ isVisible, setIsvisible ] = useState(false)
     const [ displayedGalleryImageId, setDisplayedGalleryImageId ] = useState(0)
@@ -32,34 +32,24 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
 
     const [ index, setIndex ] = useState(0)
 
-    const getAnimationStyles = (animationStyles, i) => {
-        const keysArray = []
-        const valuesArray = []
-
-
-        for (const item in animationStyles.from) {
-            let value
-            keysArray.push(item)
-            if(animationStyles.from.hasOwnProperty(item)) {
-                value = animationStyles.from[item];
-                //do something with value;
+    const getAnimationStyles = (animationStyles) => {
+        let styleObj = {}
+        for (const key in animationStyles) {
+            if (Object.hasOwnProperty.call(animationStyles, key)) {
+                // element = animationStyles[key];
+                styleObj.from = animationStyles['from']
+                styleObj.to = animationStyles['to']
             }
-            valuesArray.push(value)
         }
-        var result =  valuesArray.reduce(function(result, field, index) {
-        result[keysArray[index]] = field;
-        return result;
-        }, {})
-
-        console.log(result);
+        return styleObj
     }
 
     const springs = useSprings(
         projectsArray.length,
         projectsArray.map((project, i) => {
         return({
-            from: iconAnimations.from,
-            to: index === null | i === index ? iconAnimations.to : iconAnimations.from
+            from: getAnimationStyles(iconAnimations).from,
+            to: index === null | i === index ? getAnimationStyles(iconAnimations).to : getAnimationStyles(iconAnimations).from
         })
         //     {
         //     transform: index === null | i === index ? iconAnimations.to.transform : iconAnimations.from.transform,
@@ -71,10 +61,12 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
 
     const itemClickHandler = ( event, index ) => {
         // setIsvisible(v => !v)
-        getAnimationStyles(iconAnimations, 1)
+        let result
+        index === 0 ? result = getAnimationStyles(iconAnimations, index) : result = getAnimationStyles(galleryAnimations, index)
+        console.log(result)
         // if(index !== activeProjectId) return setIsvisible(v => !v)
         // transitionImage()
-        // setIndex(index)
+        setIndex(index)
     }
 
     const transitionImage = () => {
@@ -92,7 +84,7 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
     }
 
     return(
-        <section ref={sectionRef} style={{width:props.width, height: props.height}}>
+        <section ref={sectionRef} style={{width:width, height: height}}>
             <div className="viewport">
                 <div className="display-area">
                     <div className="display-btns-wrapper">
@@ -116,8 +108,6 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
                                 src={projectsArray[activeProjectId].screenshotsArray[displayedGalleryImageId]}
                                 alt="project screenshot"
                                 style={imagesStyle}
-                                width="300px"
-                                height="300px"
                             />
                         )}
                     </animated.div>

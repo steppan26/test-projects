@@ -21,26 +21,29 @@ const App = () => {
     <div className="App">
       <GooLoader
         width = "100%"
-        height = "auto"
         iconSize = "1em"
         iconAnimations = {{
           from: {
             transform: "scale(1) translateY(0px)",
             opactiy: 0,
             delay: 0,
-            width: "10px"
+            // width: "50px"
           },
           to: {
-            transform: "scale(1.4) translateY(-50px)",
+            transform: "scale(1.4) translateY(-150px)",
             delay: 0,
-            width: "50px"
+            opactiy: 0,
+            // width: "50px"
           }
         }}
         galleryAnimations = {{
           from: {
-
+            backgroundColor: "red",
+            color: "green"
           },
           to: {
+            backgroundColor: "black",
+            color: "yellow"
 
           }
         }}
