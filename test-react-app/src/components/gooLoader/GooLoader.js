@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useSpring, useSprings, animated } from 'react-spring'
+import { useTransition, useSprings, animated } from 'react-spring'
 import './GooLoader.css'
-import DisplaySection from "./DisplaySection";
-import placeHolder from './Images/icon.png'
+import placeHolder from './Images/arrow-icon.png'
 import { useRef } from "react";
 
+
 const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
-    const [projectsStyle, setProjectsStyle] = useState([])
     const [activeProjectId, setActiveProjectId] = useState(0)
     const sectionRef = useRef(null)
-    const [tempState, setTempState] = useState(false)
 
-    const [displayedImagesArray, setdisplayedImagesArray] = useState()
     const [isVisible, setIsvisible] = useState(false)
 
-    // const style = useSpring(elementStyle(tempState))
-
-
-    useEffect(() => {
-        projectsArray.forEach(project => {
-            // console.log("useEffect: ", project.screenshotsArray)
-        })
-    }, [])
+    const transition = useTransition(isVisible, {
+        from: { height: "0%", width: "0%", borderRadius: "0em", delay: 0 },
+        enter: item => async (next) => {
+            // await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 200 })
+            await next({ height: "100%",width: "100%", borderRadius: "0em" })
+        },
+        leave:{ height: "0%",width: "0%", borderRadius: "5em", delay: 0 },
+    })
 
     const springsConfigs = projectsArray.map( (project, index) => {
         return {style: iconAnimations.from, key: index}
     })
-
-    const setVariable = (animationValues, isActive = false) => {
-        console.log(animationValues)
-    }
-
 
     const [ index, setIndex ] = useState(0)
 
     const springs = useSprings(
         projectsArray.length,
         projectsArray.map((project, i) => {
-            setVariable(iconAnimations)
         return({
             transform: index === null | i === index ? iconAnimations.to.transform : iconAnimations.from.transform,
             opacity: index === null | i === index ? iconAnimations.to.opacity : iconAnimations.from.opacity,
@@ -46,32 +37,32 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
         })
     }))
 
-
     function itemClickHandler( event, index ) {
+        setActiveProjectId(index)
         setIndex(index)
     }
 
-
-
-    const transitionImages = async (projectIndex) => {
-        setIsvisible(false)
-        setTimeout(() => {
-            setdisplayedImagesArray(projectsArray[projectIndex].galleryArray)
-            setIsvisible(true)
-
-        }, 500)
-    }
-
-    const toggleSelectedItemEffects = (selectedItem) => {
-        const iconsArray = [...document.getElementsByClassName('project-item')]
-        iconsArray.forEach(icon => {
-            selectedItem === icon ? icon.classList.add('selected') : icon.classList.remove('selected')
-        })
-    }
     return(
         <section ref={sectionRef}>
             <div className="viewport">
-                <DisplaySection screenshotsArray={projectsArray[activeProjectId].screenshotsArray} items={isVisible} />
+                <div className="display-area">
+                    <div className="display-btns-wrapper">
+                        <img src={placeHolder} className="display-nav-btn backwards" alt="previous screenshot icon" />
+                        <img src={placeHolder} className="display-nav-btn forwards" alt="next screenshot icon" />
+                    </div>
+                    <div className="container">
+                        {transition((style, item) =>
+                                <animated.img
+                                    src={projectsArray[activeProjectId].screenshotsArray[0]}
+                                    alt="project screenshot"
+                                    style={style}
+                                    width="300px"
+                                    height="300px"
+                                />
+                            )
+                        }
+                    </div>
+                </div>
                 <div className="selection-wrapper">
                     <div className="item-bar" onClick={() => {console.log(springs)}}>
                     </div>

@@ -10,10 +10,9 @@ const importAll = (assets) => {
    assets.keys().forEach((item, index) => { images[item.replace('./', '')] = assets(item); });
   return images
 }
-const projectOneImages = importAll(require.context('./components/gooLoader/Images/Project1', false, /\.(png|jpe?g|svg)$/))
-const projectTwoImages = importAll(require.context('./components/gooLoader/Images/Project2', false, /\.(png|jpe?g|svg)$/))
-const projectThreeImages = importAll(require.context('./components/gooLoader/Images/Project3', false, /\.(png|jpe?g|svg)$/))
-
+const projectOneImages = Object.values(importAll(require.context('./components/gooLoader/Images/Project1', false, /\.(png|jpe?g|svg)$/))).map(image => image.default)
+const projectTwoImages = Object.values(importAll(require.context('./components/gooLoader/Images/Project2', false, /\.(png|jpe?g|svg)$/))).map(image => image.default)
+const projectThreeImages = Object.values(importAll(require.context('./components/gooLoader/Images/Project3', false, /\.(png|jpe?g|svg)$/))).map(image => image.default)
 
 const App = () => {
   return (

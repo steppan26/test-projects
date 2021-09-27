@@ -12,15 +12,18 @@ function DisplaySection( { screenshotsArray, items }) {
     })
     const imagesGallery = []
     for (const image in screenshotsArray) {
-        imagesGallery.push(image)
-        }
+        console.log(image)
+    }
+
+    console.log("1", screenshotsArray)
+
 
     return (
         <div className="display-area">
             <div className="container">
                 {transition((style, item) =>
                         <animated.img
-                            src={imagesGallery[0]}
+                            src={screenshotsArray[0]}
                             alt="project screenshot"
                             style={style}
                             width="300px"
