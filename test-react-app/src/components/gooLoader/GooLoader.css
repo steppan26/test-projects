@@ -13,10 +13,8 @@ section {
     justify-content: flex-start;
     align-items: center;
     flex-flow: column nowrap;
-    height: 100%;
     margin-top: 2em;
     padding: 0.5em ;
-    height: 100%;
     width: 100%;
     color: rgb(var(--var-temp));
 }

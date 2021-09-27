@@ -5,38 +5,34 @@ import placeHolder from './Images/arrow-icon.png'
 import { useRef } from "react";
 
 
-const GooLoader = ( {width = "auto", height="auto", projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
-    const [ activeProjectId, setActiveProjectId ] = useState(0)
+const GooLoader = ( { viewportHeight = "85%", itembarHeight = "15%", width = "auto", height="auto", projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
+    const [ imageIndex, setimageIndex ] = useState(0)
     const [ isVisible, setIsvisible ] = useState(false)
-    const [ displayedGalleryImageId, setDisplayedGalleryImageId ] = useState(0)
+    const [ imageArray, setImageArray ] = useState(projectsArray[0].screenshotsArray)
+    const [ index, setIndex ] = useState(0)
 
     const sectionRef = useRef(null)
 
     const projectsTransition = useTransition(true, {
         from: { height: "50%", width: "50%", borderRadius: "0em", delay: 0 },
         enter: item => async (next) => {
-            // await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 200 })
             await next({ height: "100%",width: "100%", borderRadius: "0em" })
         },
         leave:{ height: "0%",width: "0%", borderRadius: "5em", delay: 0 },
     })
 
-    const screenshotsTransition = useTransition(isVisible, {
-        from: { marginLeft: "auto", marginRight: "auto", width: "0%", borderRadius: "0em", delay: 0 },
+    const screenshotsTransition = useTransition(imageArray, {
+        from: { width: "0%", delay: 0 },
         enter: item => async (next) => {
-            // await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 200 })
-            await next({ marginLeft: "auto", marginRight: "auto", width: "100%", borderRadius: "0em", delay: 200 })
+            await next({  width: "100%", delay: 0 })
         },
-        leave:{ marginLeft: "auto", marginRight: "auto", width: "0%", borderRadius: "5em", delay: 0 },
+        leave:{ width: "0%", delay: 0 },
     })
-
-    const [ index, setIndex ] = useState(0)
 
     const getAnimationStyles = (animationStyles) => {
         let styleObj = {}
         for (const key in animationStyles) {
             if (Object.hasOwnProperty.call(animationStyles, key)) {
-                // element = animationStyles[key];
                 styleObj.from = animationStyles['from']
                 styleObj.to = animationStyles['to']
             }
@@ -54,12 +50,8 @@ const GooLoader = ( {width = "auto", height="auto", projectsArray, iconAnimation
     }))
 
     const itemClickHandler = ( event, itemIndex ) => {
-        // setIsvisible(v => !v)
-        let result
-        console.log(springs[index])
-        // if(index !== activeProjectId) return setIsvisible(v => !v)
-        // transitionImage()
         setIndex(itemIndex)
+        setimageIndex(0)
     }
 
     const transitionImage = () => {
@@ -72,13 +64,25 @@ const GooLoader = ( {width = "auto", height="auto", projectsArray, iconAnimation
         }, 2000)
     }
 
+    const getImageIndex = (scrollForward) => {
+        const { screenshotsArray } = projectsArray[index]
+        if(scrollForward) {
+            imageIndex === screenshotsArray.length - 1 ? setimageIndex(0) : setimageIndex(v => v+1)
+        } else {
+            imageIndex === 0 ?  setimageIndex(screenshotsArray.length - 1) : setimageIndex(v => v-1)
+        }
+    }
+
     const onGalleryScrollClick = (scrollForward = true) => {
-        scrollForward ? console.log("next image") : console.log("previous image")
+        getImageIndex(scrollForward)
+        setIsvisible(v => !v)
     }
 
     return(
         <section ref={sectionRef} style={{width:width, height: height}}>
-            <div className="viewport">
+            <div className="viewport" style={{
+                gridTemplateRows: `${viewportHeight} ${itembarHeight}`
+            }}>
                 <div className="display-area">
                     <div className="display-btns-wrapper">
                         <img
@@ -96,11 +100,12 @@ const GooLoader = ( {width = "auto", height="auto", projectsArray, iconAnimation
                     </div>
                     {projectsTransition((style, item) =>
                     <animated.div className="container" style={style}>
-                        {screenshotsTransition((imagesStyle, item) =>
+                        {screenshotsTransition((imagesStyle, imageItem) =>
                             <animated.img
-                                src={projectsArray[activeProjectId].screenshotsArray[displayedGalleryImageId]}
+                                src={imageItem[imageIndex]}
                                 alt="project screenshot"
                                 style={imagesStyle}
+                                onClick={() => console.log(imageItem)}
                             />
                         )}
                     </animated.div>

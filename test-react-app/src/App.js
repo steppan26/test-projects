@@ -21,6 +21,8 @@ const App = () => {
     <div className="App">
       <GooLoader
         width = "100%"
+        viewportHeight = "500px"
+        itembarHeight = "max-content"
         iconAnimations = {{
           from: {
             transform: "scale(1) translateY(0em)",
