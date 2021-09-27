@@ -51,22 +51,15 @@ const GooLoader = ( {width = "auto", height="auto", projectsArray, iconAnimation
             from: getAnimationStyles(iconAnimations).from,
             to: index === null | i === index ? getAnimationStyles(iconAnimations).to : getAnimationStyles(iconAnimations).from
         })
-        //     {
-        //     transform: index === null | i === index ? iconAnimations.to.transform : iconAnimations.from.transform,
-        //     opacity: index === null | i === index ? iconAnimations.to.opacity : iconAnimations.from.opacity,
-        //     delay: index === null | i === index ? iconAnimations.to.delay : iconAnimations.from.delay,
-        //     from: iconAnimations.from,
-        // })
     }))
 
-    const itemClickHandler = ( event, index ) => {
+    const itemClickHandler = ( event, itemIndex ) => {
         // setIsvisible(v => !v)
         let result
-        index === 0 ? result = getAnimationStyles(iconAnimations, index) : result = getAnimationStyles(galleryAnimations, index)
-        console.log(result)
+        console.log(springs[index])
         // if(index !== activeProjectId) return setIsvisible(v => !v)
         // transitionImage()
-        setIndex(index)
+        setIndex(itemIndex)
     }
 
     const transitionImage = () => {

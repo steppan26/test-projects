@@ -21,19 +21,12 @@ const App = () => {
     <div className="App">
       <GooLoader
         width = "100%"
-        iconSize = "1em"
         iconAnimations = {{
           from: {
-            transform: "scale(1) translateY(0px)",
-            opactiy: 0,
-            delay: 0,
-            // width: "50px"
+            transform: "scale(1) translateY(0em)",
           },
           to: {
-            transform: "scale(1.4) translateY(-150px)",
-            delay: 0,
-            opactiy: 0,
-            // width: "50px"
+            transform: "scale(1.6) translateY(-1.5em)",
           }
         }}
         galleryAnimations = {{
@@ -50,7 +43,7 @@ const App = () => {
         projectsArray={[
           {
             id: "ProjectOne",
-            icon: placeHolder,
+            icon: projectOneIcon,
             screenshotsArray: projectOneImages
           },
           {
