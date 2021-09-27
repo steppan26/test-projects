@@ -15,7 +15,9 @@ section {
     flex-flow: column nowrap;
     height: 100%;
     margin-top: 2em;
-    padding: 3em ;
+    padding: 0.5em ;
+    height: 100%;
+    width: 100%;
     color: rgb(var(--var-temp));
 }
 
@@ -26,8 +28,6 @@ section {
     justify-items: center;
     align-content: flex-start;
     position: relative;
-    height: 650px;
-    width: 950px;
     max-height: 100%;
     grid-gap: 2em;
 }

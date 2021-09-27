@@ -20,15 +20,20 @@ const App = () => {
   return (
     <div className="App">
       <GooLoader
+        width = "100%"
+        height = "auto"
+        iconSize = "1em"
         iconAnimations = {{
           from: {
             transform: "scale(1) translateY(0px)",
             opactiy: 0,
             delay: 0,
+            width: "10px"
           },
           to: {
             transform: "scale(1.4) translateY(-50px)",
             delay: 0,
+            width: "50px"
           }
         }}
         galleryAnimations = {{

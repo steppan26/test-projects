@@ -32,21 +32,49 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
 
     const [ index, setIndex ] = useState(0)
 
+    const getAnimationStyles = (animationStyles, i) => {
+        const keysArray = []
+        const valuesArray = []
+
+
+        for (const item in animationStyles.from) {
+            let value
+            keysArray.push(item)
+            if(animationStyles.from.hasOwnProperty(item)) {
+                value = animationStyles.from[item];
+                //do something with value;
+            }
+            valuesArray.push(value)
+        }
+        var result =  valuesArray.reduce(function(result, field, index) {
+        result[keysArray[index]] = field;
+        return result;
+        }, {})
+
+        console.log(result);
+    }
+
     const springs = useSprings(
         projectsArray.length,
         projectsArray.map((project, i) => {
         return({
-            transform: index === null | i === index ? iconAnimations.to.transform : iconAnimations.from.transform,
-            opacity: index === null | i === index ? iconAnimations.to.opacity : iconAnimations.from.opacity,
-            delay: index === null | i === index ? iconAnimations.to.delay : iconAnimations.from.delay,
             from: iconAnimations.from,
+            to: index === null | i === index ? iconAnimations.to : iconAnimations.from
         })
+        //     {
+        //     transform: index === null | i === index ? iconAnimations.to.transform : iconAnimations.from.transform,
+        //     opacity: index === null | i === index ? iconAnimations.to.opacity : iconAnimations.from.opacity,
+        //     delay: index === null | i === index ? iconAnimations.to.delay : iconAnimations.from.delay,
+        //     from: iconAnimations.from,
+        // })
     }))
 
     const itemClickHandler = ( event, index ) => {
-        if(index !== activeProjectId) return setIsvisible(v => !v)
-        transitionImage()
-        setIndex(index)
+        // setIsvisible(v => !v)
+        getAnimationStyles(iconAnimations, 1)
+        // if(index !== activeProjectId) return setIsvisible(v => !v)
+        // transitionImage()
+        // setIndex(index)
     }
 
     const transitionImage = () => {
@@ -64,7 +92,7 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
     }
 
     return(
-        <section ref={sectionRef}>
+        <section ref={sectionRef} style={{width:props.width, height: props.height}}>
             <div className="viewport">
                 <div className="display-area">
                     <div className="display-btns-wrapper">
