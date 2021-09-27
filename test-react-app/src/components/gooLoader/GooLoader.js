@@ -12,13 +12,22 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
 
     const sectionRef = useRef(null)
 
-    const transition = useTransition(isVisible, {
-        from: { height: "0%", width: "0%", borderRadius: "0em", delay: 0 },
+    const projectsTransition = useTransition(true, {
+        from: { height: "50%", width: "50%", borderRadius: "0em", delay: 0 },
         enter: item => async (next) => {
             // await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 200 })
             await next({ height: "100%",width: "100%", borderRadius: "0em" })
         },
         leave:{ height: "0%",width: "0%", borderRadius: "5em", delay: 0 },
+    })
+
+    const screenshotsTransition = useTransition(isVisible, {
+        from: { marginLeft: "auto", marginRight: "auto", width: "0%", borderRadius: "0em", delay: 0 },
+        enter: item => async (next) => {
+            // await next({ height: "50%", width: "50%", borderRadius: "5em", delay: 200 })
+            await next({ marginLeft: "auto", marginRight: "auto", width: "100%", borderRadius: "0em", delay: 200 })
+        },
+        leave:{ marginLeft: "auto", marginRight: "auto", width: "0%", borderRadius: "5em", delay: 0 },
     })
 
     const [ index, setIndex ] = useState(0)
@@ -35,8 +44,19 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
     }))
 
     const itemClickHandler = ( event, index ) => {
-        setActiveProjectId(index)
+        if(index !== activeProjectId) return setIsvisible(v => !v)
+        transitionImage()
         setIndex(index)
+    }
+
+    const transitionImage = () => {
+        console.log("setting to false")
+
+        setIsvisible(false)
+        setTimeout(() => {
+            console.log("setting to true")
+            setIsvisible(true)
+        }, 2000)
     }
 
     const onGalleryScrollClick = (scrollForward = true) => {
@@ -61,18 +81,19 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
                             onClick= {() => onGalleryScrollClick(true)}
                         />
                     </div>
-                    <div className="container">
-                        {transition((style, item) =>
-                                <animated.img
-                                    src={projectsArray[activeProjectId].screenshotsArray[0]}
-                                    alt="project screenshot"
-                                    style={style}
-                                    width="300px"
-                                    height="300px"
-                                />
-                            )
-                        }
-                    </div>
+                    {projectsTransition((style, item) =>
+                    <animated.div className="container" style={style}>
+                        {screenshotsTransition((imagesStyle, item) =>
+                            <animated.img
+                                src={projectsArray[activeProjectId].screenshotsArray[displayedGalleryImageId]}
+                                alt="project screenshot"
+                                style={imagesStyle}
+                                width="300px"
+                                height="300px"
+                            />
+                        )}
+                    </animated.div>
+                    )}
                 </div>
                 <div className="selection-wrapper">
                     <div className="item-bar" onClick={() => {console.log(springs)}}>

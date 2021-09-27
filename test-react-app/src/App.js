@@ -3,6 +3,8 @@ import GooLoader from './components/gooLoader/GooLoader';
 import projectOneIcon from './components/gooLoader/Images/Project1/icon.png'
 import projectTwoIcon from './components/gooLoader/Images/Project2/icon.png'
 import projectThreeIcon from './components/gooLoader/Images/Project3/icon.png'
+import placeHolder from './components/gooLoader/Images/icon.png'
+
 
 
 const importAll = (assets) => {
@@ -22,11 +24,11 @@ const App = () => {
           from: {
             transform: "scale(1) translateY(0px)",
             opactiy: 0,
-            delay: 200,
+            delay: 0,
           },
           to: {
             transform: "scale(1.4) translateY(-50px)",
-            delay: 200,
+            delay: 0,
           }
         }}
         galleryAnimations = {{
@@ -40,7 +42,7 @@ const App = () => {
         projectsArray={[
           {
             id: "ProjectOne",
-            icon: projectOneIcon,
+            icon: placeHolder,
             screenshotsArray: projectOneImages
           },
           {
