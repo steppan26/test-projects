@@ -6,10 +6,11 @@ import { useRef } from "react";
 
 
 const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
-    const [activeProjectId, setActiveProjectId] = useState(0)
-    const sectionRef = useRef(null)
+    const [ activeProjectId, setActiveProjectId ] = useState(0)
+    const [ isVisible, setIsvisible ] = useState(false)
+    const [ displayedGalleryImageId, setDisplayedGalleryImageId ] = useState(0)
 
-    const [isVisible, setIsvisible] = useState(false)
+    const sectionRef = useRef(null)
 
     const transition = useTransition(isVisible, {
         from: { height: "0%", width: "0%", borderRadius: "0em", delay: 0 },
@@ -18,10 +19,6 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
             await next({ height: "100%",width: "100%", borderRadius: "0em" })
         },
         leave:{ height: "0%",width: "0%", borderRadius: "5em", delay: 0 },
-    })
-
-    const springsConfigs = projectsArray.map( (project, index) => {
-        return {style: iconAnimations.from, key: index}
     })
 
     const [ index, setIndex ] = useState(0)
@@ -37,9 +34,13 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
         })
     }))
 
-    function itemClickHandler( event, index ) {
+    const itemClickHandler = ( event, index ) => {
         setActiveProjectId(index)
         setIndex(index)
+    }
+
+    const onGalleryScrollClick = (scrollForward = true) => {
+        scrollForward ? console.log("next image") : console.log("previous image")
     }
 
     return(
@@ -47,8 +48,18 @@ const GooLoader = ( { projectsArray, iconAnimations = { from: {}, to: {} }, gall
             <div className="viewport">
                 <div className="display-area">
                     <div className="display-btns-wrapper">
-                        <img src={placeHolder} className="display-nav-btn backwards" alt="previous screenshot icon" />
-                        <img src={placeHolder} className="display-nav-btn forwards" alt="next screenshot icon" />
+                        <img
+                            src={placeHolder}
+                            className="display-nav-btn backwards"
+                            alt="previous screenshot icon"
+                            onClick= {() => onGalleryScrollClick(false)}
+                        />
+                        <img
+                            src={placeHolder}
+                            className="display-nav-btn forwards"
+                            alt="next screenshot icon"
+                            onClick= {() => onGalleryScrollClick(true)}
+                        />
                     </div>
                     <div className="container">
                         {transition((style, item) =>
