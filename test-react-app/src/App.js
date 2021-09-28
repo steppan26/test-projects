@@ -27,7 +27,7 @@ const App = () => {
             transform: "scale(1) translateY(0em)",
           },
           to: {
-            transform: "scale(1.6) translateY(5em)",
+            transform: "scale(1.6) translateY(-4em)",
           }
         }}
         projectsArray={[
