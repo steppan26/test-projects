@@ -1,8 +1,8 @@
 import './App.css';
 import GooLoader from './components/gooLoader/GooLoader';
-import projectOneIcon from './components/gooLoader/Images/Project1/icon.png'
-import projectTwoIcon from './components/gooLoader/Images/Project2/icon.png'
-import projectThreeIcon from './components/gooLoader/Images/Project3/icon.png'
+import projectOneIcon from './components/gooLoader/Images/Project1_icon.png'
+import projectTwoIcon from './components/gooLoader/Images/Project2_icon.png'
+import projectThreeIcon from './components/gooLoader/Images/Project3_icon.png'
 import placeHolder from './components/gooLoader/Images/icon.png'
 
 
@@ -20,30 +20,32 @@ const App = () => {
   return (
     <div className="App">
       <GooLoader
-        width = "100%"
-        viewportHeight = "500px"
-        itembarHeight = "max-content"
+        viewportWidth = "500px"
+        // viewportHeight = "450px"
         iconAnimations = {{
           from: {
             transform: "scale(1) translateY(0em)",
           },
           to: {
-            transform: "scale(1.6) translateY(-1.5em)",
-          }
-        }}
-        galleryAnimations = {{
-          from: {
-            backgroundColor: "red",
-            color: "green"
-          },
-          to: {
-            backgroundColor: "black",
-            color: "yellow"
-
+            transform: "scale(1.6) translateY(5em)",
           }
         }}
         projectsArray={[
           {
+            id: "ProjectOne",
+            icon: projectOneIcon,
+            screenshotsArray: projectOneImages
+          },
+          {
+            id: "ProjectTwo",
+            icon: projectTwoIcon,
+            screenshotsArray: projectTwoImages
+          },
+          {
+            id: "ProjectThree",
+            icon: projectThreeIcon,
+            screenshotsArray: projectThreeImages
+          },          {
             id: "ProjectOne",
             icon: projectOneIcon,
             screenshotsArray: projectOneImages

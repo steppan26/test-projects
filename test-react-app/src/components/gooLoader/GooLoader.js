@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTransition, useSprings, animated } from 'react-spring'
 import './GooLoader.css'
 import placeHolder from './Images/arrow-icon.png'
 import { useRef } from "react";
 
+const GooLoader = ( {
+        viewportWidth = "650px",
+        viewportHeight = "500px",
+        itembarHeight = "15%",
+        width = "auto",
+        height="auto",
+        projectsArray,
+        iconAnimations = { from: {}, to: {} },
+        ...props
+    } ) => {
 
-const GooLoader = ( { viewportHeight = "85%", itembarHeight = "15%", width = "auto", height="auto", projectsArray, iconAnimations = { from: {}, to: {} }, galleryAnimations = { from: {}, to: {} } , ...props } ) => {
     const [ imageIndex, setimageIndex ] = useState(0)
-    const [ isVisible, setIsvisible ] = useState(false)
-    const [ imageArray, setImageArray ] = useState(projectsArray[0].screenshotsArray)
+    // const [ isVisible, setIsvisible ] = useState(false)
     const [ index, setIndex ] = useState(0)
 
     const sectionRef = useRef(null)
 
-    const projectsTransition = useTransition(true, {
-        from: { height: "50%", width: "50%", borderRadius: "0em", delay: 0 },
-        enter: item => async (next) => {
-            await next({ height: "100%",width: "100%", borderRadius: "0em" })
+    const screenshotsTransition = useTransition(imageIndex, {
+        key: imageIndex,
+        from: { opacity: 0, },
+        enter: { opacity: 1, },
+        leave: item => async (next) => {
+            await next({ opacity: 0, })
         },
-        leave:{ height: "0%",width: "0%", borderRadius: "5em", delay: 0 },
-    })
-
-    const screenshotsTransition = useTransition(imageArray, {
-        from: { width: "0%", delay: 0 },
-        enter: item => async (next) => {
-            await next({  width: "100%", delay: 0 })
-        },
-        leave:{ width: "0%", delay: 0 },
+        // config: { duration: 200}
     })
 
     const getAnimationStyles = (animationStyles) => {
@@ -54,34 +56,25 @@ const GooLoader = ( { viewportHeight = "85%", itembarHeight = "15%", width = "au
         setimageIndex(0)
     }
 
-    const transitionImage = () => {
-        console.log("setting to false")
-
-        setIsvisible(false)
-        setTimeout(() => {
-            console.log("setting to true")
-            setIsvisible(true)
-        }, 2000)
-    }
-
     const getImageIndex = (scrollForward) => {
         const { screenshotsArray } = projectsArray[index]
         if(scrollForward) {
-            imageIndex === screenshotsArray.length - 1 ? setimageIndex(0) : setimageIndex(v => v+1)
+            imageIndex === screenshotsArray.length - 1 ? setimageIndex(0) : setimageIndex(imageIndex + 1)
         } else {
-            imageIndex === 0 ?  setimageIndex(screenshotsArray.length - 1) : setimageIndex(v => v-1)
+            imageIndex === 0 ?  setimageIndex(screenshotsArray.length - 1) : setimageIndex(imageIndex - 1)
         }
+
     }
 
     const onGalleryScrollClick = (scrollForward = true) => {
         getImageIndex(scrollForward)
-        setIsvisible(v => !v)
     }
 
     return(
         <section ref={sectionRef} style={{width:width, height: height}}>
             <div className="viewport" style={{
-                gridTemplateRows: `${viewportHeight} ${itembarHeight}`
+                // gridTemplateRows: `${viewportHeight} ${itembarHeight}`,
+                height: viewportHeight
             }}>
                 <div className="display-area">
                     <div className="display-btns-wrapper">
@@ -98,18 +91,16 @@ const GooLoader = ( { viewportHeight = "85%", itembarHeight = "15%", width = "au
                             onClick= {() => onGalleryScrollClick(true)}
                         />
                     </div>
-                    {projectsTransition((style, item) =>
-                    <animated.div className="container" style={style}>
-                        {screenshotsTransition((imagesStyle, imageItem) =>
+                    <div className="container" style={{ width: viewportWidth}}>
+                        {screenshotsTransition((imageStyle, i) =>
                             <animated.img
-                                src={imageItem[imageIndex]}
+                                src={projectsArray[index].screenshotsArray[i]}
                                 alt="project screenshot"
-                                style={imagesStyle}
-                                onClick={() => console.log(imageItem)}
+                                style={imageStyle}
+                                onClick={() => console.log(projectsArray[index].screenshotsArray[i])}
                             />
                         )}
-                    </animated.div>
-                    )}
+                    </div>
                 </div>
                 <div className="selection-wrapper">
                     <div className="item-bar" onClick={() => {console.log(springs)}}>
